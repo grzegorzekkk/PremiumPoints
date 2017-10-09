@@ -1,0 +1,63 @@
+name: ${project.name}
+main: ${project.groupId}.premiumpoints.${project.artifactId}
+version: ${project.version}
+author: ${project.author}
+depend: [PlayerPoints]
+commands:
+  pp:
+    description: PremiumPoints plugin main command
+    usage: /<command>
+permissions:
+  pp.*:
+    description: Access to all admin commands.
+    children:
+      pp.add: true
+      pp.reload: true
+      pp.sms: true
+      pp.history: true
+      pp.top: true
+      pp.givepsc: true
+      pp.psc: true
+      pp.info: true
+      pp.collect: true
+      pp.pay: true
+  pp.player:
+    description: Access to player commands.
+    children:
+      pp.sms: true
+      pp.psc: true
+      pp.info: true
+      pp.history: true
+      pp.top: true
+      pp.collect: true
+      pp.pay: true
+  pp.add:
+    description: Adminnistrator command that adds premiumpoints to player's account
+    default: op
+  pp.reload:
+    description: Administrator command that reloads configuration.
+    default: op
+  pp.givepsc:
+    description: Administrator command that transfers premium points to player.
+    default: op
+  pp.sms:
+    description: Command for sms premium points payment.
+    default: true
+  pp.history:
+    description: Command to check purchases history.
+    default: true
+  pp.top:
+    description: Command to check top buyers of the month.
+    default: true
+  pp.info:
+    description: Main plugin command.
+    default: true
+  pp.psc:
+    description: Command for psc premium points payment.
+    default: true
+  pp.collect:
+    description: Command to redeem pp bought by Paysafecard.
+    default: true
+  pp.pay:
+    description: Command for sending pp to other players.
+    default: true

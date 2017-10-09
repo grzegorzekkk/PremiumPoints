@@ -1,0 +1,43 @@
+database:
+  host: 'localhost'
+  port: 3306
+  database_name: 'name'
+  username: 'username'
+  password: 'password'
+email:
+  smtp: 'smtp.xx.com'
+  port: 465
+  username: 'email'
+  password: 'password'
+  receiver: 'send_to_email'
+pp_multiplier: 1.0
+secret: 'secret'
+provider:
+  url: 'http://sms.cashbill.pl/backcode_check.php'
+  resp_valid: 'OK'
+  services:
+    '30':
+      points: 30
+      number: 73480
+      prefix: 'prefix'
+      price: 3.69
+    '60':
+      points: 60
+      number: 76480
+      prefix: 'prefix'
+      price: 7.38
+    '90':
+      points: 90
+      number: 79480
+      prefix: 'prefix'
+      price: 11.07
+    '140':
+      points: 140
+      number: 91400
+      prefix: 'prefix'
+      price: 17.22
+    '190':
+      points: 190
+      number: 91900
+      prefix: 'prefix'
+      price: 23.37
