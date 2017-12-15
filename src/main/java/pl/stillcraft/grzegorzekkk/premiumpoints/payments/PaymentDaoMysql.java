@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentDaoMysql implements PaymentDao {
@@ -38,7 +38,7 @@ public class PaymentDaoMysql implements PaymentDao {
 
     @Override
     public List<Payment> getAllPayments() {
-        List<Payment> allPayments = new LinkedList<>();
+        List<Payment> allPayments = new ArrayList<>();
 
         try (Connection connection = getConnection();
              PreparedStatement select =
@@ -66,7 +66,7 @@ public class PaymentDaoMysql implements PaymentDao {
 
     @Override
     public List<Payment> getLastPlayerPayments(Player p) {
-        List<Payment> playerPayments = new LinkedList<>();
+        List<Payment> playerPayments = new ArrayList<>();
 
         try (Connection connection = getConnection();
              PreparedStatement select =
@@ -99,7 +99,7 @@ public class PaymentDaoMysql implements PaymentDao {
      */
     @Override
     public List<Pair<String, Integer>> getTopMonthPlayers() {
-        List<Pair<String, Integer>> topPlayers = new LinkedList<>();
+        List<Pair<String, Integer>> topPlayers = new ArrayList<>();
 
         try (Connection connection = getConnection();
              PreparedStatement select =
@@ -126,7 +126,7 @@ public class PaymentDaoMysql implements PaymentDao {
      */
     @Override
     public List<Payment> getNotCollectedPayments() {
-        List<Payment> notCollectedPayments = new LinkedList<>();
+        List<Payment> notCollectedPayments = new ArrayList<>();
 
         try (Connection connection = getConnection();
              PreparedStatement select =

@@ -7,7 +7,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerTabCompleter implements TabCompleter {
@@ -18,7 +18,7 @@ public class PlayerTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(
             CommandSender commandSender, Command command, String s, String[] strings) {
-        List<String> playerNames = new LinkedList<>();
+        List<String> playerNames = new ArrayList<>();
 
         if (strings.length == 1 && COMMANDS_TO_COMPLETE.contains(strings[0])) {
             Bukkit.getOnlinePlayers().forEach(a -> playerNames.add(a.getName()));

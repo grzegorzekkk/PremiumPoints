@@ -30,7 +30,7 @@ public class CollectPpTask {
      * minutes.
      */
     public void startCollecting() {
-        notCollectedPayments = Collections.synchronizedList(new LinkedList<>());
+        notCollectedPayments = Collections.synchronizedList(new ArrayList<>());
         new BukkitRunnable() {
             @Override
             public void run() {

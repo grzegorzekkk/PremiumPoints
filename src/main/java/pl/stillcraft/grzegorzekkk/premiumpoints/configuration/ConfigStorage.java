@@ -7,7 +7,7 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.payments.sms.SmsService;
 import pl.stillcraft.grzegorzekkk.premiumpoints.utils.Storage;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class ConfigStorage extends Storage {
     }
 
     public List<SmsService> getProviderServices() {
-        List<SmsService> services = new LinkedList<>();
+        List<SmsService> services = new ArrayList<>();
 
         ConfigurationSection cs = config.getConfigurationSection("provider.services");
 
