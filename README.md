@@ -1,4 +1,4 @@
-# PremiumPoints
+# PremiumPoints  [![Build Status](https://travis-ci.org/grzegorzekkk/PremiumPoints.svg?branch=master)](https://travis-ci.org/grzegorzekkk/PremiumPoints)
 [Minecraft Plugin] Premium server currency system.
 
 This plugin is PlayerPoints extension providing currency payment history, leaderboard, SMS purchase method.
