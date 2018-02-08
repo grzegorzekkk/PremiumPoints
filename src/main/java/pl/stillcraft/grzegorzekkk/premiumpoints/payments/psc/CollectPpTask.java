@@ -63,6 +63,9 @@ public class CollectPpTask {
     }
 
     public List<Payment> getNotCollectedPayments() {
+        if(notCollectedPayments==null){
+            return new ArrayList<>();
+        }
         return notCollectedPayments;
     }
 }

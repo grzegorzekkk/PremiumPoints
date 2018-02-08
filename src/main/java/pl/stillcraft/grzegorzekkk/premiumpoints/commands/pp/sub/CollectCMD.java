@@ -48,7 +48,7 @@ public class CollectCMD implements SubCMD {
                         .filter(payment -> payment.getUser().equals(p.getName()))
                         .collect(Collectors.toList());
 
-        if (senderPayments == null || senderPayments.isEmpty()) {
+        if (senderPayments.isEmpty()) {
             Messenger.send(p, Locale.PLUGIN_HEADER, Locale.COLLECT_FAIL);
             return;
         }
