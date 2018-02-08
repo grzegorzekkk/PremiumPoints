@@ -18,6 +18,8 @@ import java.util.Arrays;
 public class PremiumPoints extends JavaPlugin {
 
     private static PremiumPoints instance;
+    private PaymentDao paymentDao;
+    private CollectPpTask collectPpTask;
 
     public static PremiumPoints getInstance() {
         return instance;
@@ -35,14 +37,13 @@ public class PremiumPoints extends JavaPlugin {
         ConfigStorage.getInstance().setConfigFilename("config.yml");
         ConfigStorage.getInstance().reloadConfig();
 
-        HikariPool.getInstance().setupHikari();
+        HikariPool hikariPool = new HikariPool();
+        paymentDao = new PaymentDaoMysql(hikariPool.getDataSource());
+        paymentDao.createTable();
 
-        PaymentDao pDao = new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
-        pDao.createTable();
-
-        CollectPpTask task = CollectPpTask.getInstance();
-        task.startCollecting();
-        task.startPlayerInforming();
+        collectPpTask = new CollectPpTask(paymentDao);
+        collectPpTask.startCollecting();
+        collectPpTask.startPlayerInforming();
 
         ConsoleLogger.info("Enabled PremiumPoints plugin!");
         if (PlayerPointsHook.hookPlayerPoints()) {
@@ -53,10 +54,9 @@ public class PremiumPoints extends JavaPlugin {
         registerCommands();
     }
 
-    // Fired when plugin is disabled
+    // Fired when plugin is being disabled
     @Override
     public void onDisable() {
-        HikariPool.getInstance().close();
         ConsoleLogger.info("PremiumPoints plugin has been disabled");
     }
 
@@ -66,12 +66,12 @@ public class PremiumPoints extends JavaPlugin {
 
         CommandManager.addComand(Arrays.asList("reload", "r"), new ReloadCMD());
         CommandManager.addComand(Arrays.asList("info"), new InfoCMD());
-        CommandManager.addComand(Arrays.asList("sms"), new SmsCMD());
-        CommandManager.addComand(Arrays.asList("history", "historia"), new HistoryCMD());
-        CommandManager.addComand(Arrays.asList("top"), new TopCMD());
-        CommandManager.addComand(Arrays.asList("givepsc"), new GivePscCMD());
+        CommandManager.addComand(Arrays.asList("sms"), new SmsCMD(paymentDao));
+        CommandManager.addComand(Arrays.asList("history", "historia"), new HistoryCMD(paymentDao));
+        CommandManager.addComand(Arrays.asList("top"), new TopCMD(paymentDao));
+        CommandManager.addComand(Arrays.asList("givepsc"), new GivePscCMD(paymentDao));
         CommandManager.addComand(Arrays.asList("psc"), new PscCMD());
-        CommandManager.addComand(Arrays.asList("collect", "odbierz"), new CollectCMD());
+        CommandManager.addComand(Arrays.asList("collect", "odbierz"), new CollectCMD(collectPpTask, paymentDao));
         CommandManager.addComand(Arrays.asList("pay", "daj"), new PayCMD());
         CommandManager.addComand(Arrays.asList("add"), new AddCMD());
     }

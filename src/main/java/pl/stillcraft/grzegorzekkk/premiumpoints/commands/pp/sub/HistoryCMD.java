@@ -11,8 +11,6 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.messages.MessageStorage;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Messenger;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.Payment;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDao;
-import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDaoMysql;
-import pl.stillcraft.grzegorzekkk.premiumpoints.utils.HikariPool;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +18,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class HistoryCMD implements SubCMD {
+
+    private PaymentDao paymentDao;
+
+    public HistoryCMD(PaymentDao paymentDaoArg) {
+        paymentDao = paymentDaoArg;
+    }
 
     @Override
     public String getPermission() {
@@ -41,9 +45,8 @@ public class HistoryCMD implements SubCMD {
         new BukkitRunnable() {
             @Override
             public void run() {
-                PaymentDao pDao = new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
                 List<Payment> playerLastPayments =
-                        Collections.synchronizedList(pDao.getLastPlayerPayments(p));
+                        Collections.synchronizedList(paymentDao.getLastPlayerPayments(p));
                 if (playerLastPayments.isEmpty()) {
                     Messenger.send(p, Locale.HISTORY_EMPTY);
                 }

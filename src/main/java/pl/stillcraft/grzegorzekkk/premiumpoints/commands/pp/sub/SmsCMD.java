@@ -12,15 +12,19 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Locale;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.MessageStorage;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Messenger;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDao;
-import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDaoMysql;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.sms.SmsProvider;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.sms.SmsService;
-import pl.stillcraft.grzegorzekkk.premiumpoints.utils.HikariPool;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SmsCMD implements SubCMD {
+
+    private PaymentDao paymentDao;
+
+    public SmsCMD(PaymentDao paymentDaoArg) {
+        paymentDao = paymentDaoArg;
+    }
 
     @Override
     public boolean needsPlayer() {
@@ -83,9 +87,7 @@ public class SmsCMD implements SubCMD {
 
                         PlayerPointsHook.givePoints(p, givePoints);
 
-                        PaymentDao pDao =
-                                new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
-                        pDao.addPayment(p.getName(), givePoints, false);
+                        paymentDao.addPayment(p.getName(), givePoints, false);
 
                         Messenger.send(p, Locale.PLUGIN_HEADER);
                         Messenger.send(

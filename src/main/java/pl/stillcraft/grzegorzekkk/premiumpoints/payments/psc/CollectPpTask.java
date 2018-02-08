@@ -8,21 +8,16 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Locale;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Messenger;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.Payment;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDao;
-import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDaoMysql;
-import pl.stillcraft.grzegorzekkk.premiumpoints.utils.HikariPool;
 
 import java.util.*;
 
 public class CollectPpTask {
 
-    private static CollectPpTask instance;
     private List<Payment> notCollectedPayments;
+    private PaymentDao paymentDao;
 
-    public static CollectPpTask getInstance() {
-        if (instance == null) {
-            instance = new CollectPpTask();
-        }
-        return instance;
+    public CollectPpTask(PaymentDao paymentDaoArg) {
+        paymentDao = paymentDaoArg;
     }
 
     /**
@@ -34,8 +29,7 @@ public class CollectPpTask {
         new BukkitRunnable() {
             @Override
             public void run() {
-                PaymentDao pDao = new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
-                notCollectedPayments = pDao.getNotCollectedPayments();
+                notCollectedPayments = paymentDao.getNotCollectedPayments();
             }
         }.runTaskTimerAsynchronously(PremiumPoints.getInstance(), 0L, 20L * 60 * 3);
     }
@@ -65,8 +59,7 @@ public class CollectPpTask {
      * Instant update of not completed payments to plugin memory.
      */
     public void refreshNotCollectedPayments() {
-        PaymentDao pDao = new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
-        notCollectedPayments = pDao.getNotCollectedPayments();
+        notCollectedPayments = paymentDao.getNotCollectedPayments();
     }
 
     public List<Payment> getNotCollectedPayments() {

@@ -10,10 +10,14 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.commands.pp.SubCMD;
 import pl.stillcraft.grzegorzekkk.premiumpoints.configuration.ConfigStorage;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Messenger;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDao;
-import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDaoMysql;
-import pl.stillcraft.grzegorzekkk.premiumpoints.utils.HikariPool;
 
 public class GivePscCMD implements SubCMD {
+
+    private PaymentDao paymentDao;
+
+    public GivePscCMD(PaymentDao paymentDaoArg) {
+        paymentDao = paymentDaoArg;
+    }
 
     @Override
     public boolean needsPlayer() {
@@ -55,8 +59,7 @@ public class GivePscCMD implements SubCMD {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    PaymentDao pDao = new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
-                    pDao.addPayment(playerName, ppAmount, true);
+                    paymentDao.addPayment(playerName, ppAmount, true);
                 }
             }.runTaskAsynchronously(PremiumPoints.getInstance());
         }

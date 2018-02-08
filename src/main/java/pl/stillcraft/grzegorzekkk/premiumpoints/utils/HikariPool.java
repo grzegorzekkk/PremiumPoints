@@ -9,18 +9,7 @@ import java.util.Map;
 
 public class HikariPool {
 
-    private static HikariPool instance;
     private HikariDataSource hds;
-
-    private HikariPool() {
-    }
-
-    public static HikariPool getInstance() {
-        if (instance == null) {
-            instance = new HikariPool();
-        }
-        return instance;
-    }
 
     /**
      * Prepare HikariCp connection datasource. In this case MySQL jdbc.
@@ -51,6 +40,5 @@ public class HikariPool {
      */
     public void close() {
         hds.close();
-        instance = null;
     }
 }

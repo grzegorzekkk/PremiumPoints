@@ -11,14 +11,20 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Locale;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Messenger;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.Payment;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDao;
-import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDaoMysql;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.psc.CollectPpTask;
-import pl.stillcraft.grzegorzekkk.premiumpoints.utils.HikariPool;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CollectCMD implements SubCMD {
+
+    private CollectPpTask collectPpTask;
+    private PaymentDao paymentDao;
+
+    public CollectCMD(CollectPpTask collectPpTaskArg, PaymentDao paymentDaoArg) {
+        collectPpTask = collectPpTaskArg;
+        paymentDao = paymentDaoArg;
+    }
 
     @Override
     public String getPermission() {
@@ -34,8 +40,8 @@ public class CollectCMD implements SubCMD {
     public void onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
 
-        CollectPpTask.getInstance().refreshNotCollectedPayments();
-        List<Payment> allPayments = CollectPpTask.getInstance().getNotCollectedPayments();
+        collectPpTask.refreshNotCollectedPayments();
+        List<Payment> allPayments = collectPpTask.getNotCollectedPayments();
         List<Payment> senderPayments =
                 allPayments
                         .stream()
@@ -56,8 +62,7 @@ public class CollectCMD implements SubCMD {
             @Override
             public void run() {
                 for (Payment payment : senderPayments) {
-                    PaymentDao pDao = new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
-                    pDao.changeCollectedStatus(payment.getId());
+                    paymentDao.changeCollectedStatus(payment.getId());
                 }
             }
         }.runTaskAsynchronously(PremiumPoints.getInstance());

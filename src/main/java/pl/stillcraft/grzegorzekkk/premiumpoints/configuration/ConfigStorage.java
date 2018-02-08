@@ -6,8 +6,8 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.configuration.email.EmailSetting
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.sms.SmsService;
 import pl.stillcraft.grzegorzekkk.premiumpoints.utils.Storage;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

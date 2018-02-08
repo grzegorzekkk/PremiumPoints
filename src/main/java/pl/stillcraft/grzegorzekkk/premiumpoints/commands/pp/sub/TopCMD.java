@@ -10,13 +10,17 @@ import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Locale;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.MessageStorage;
 import pl.stillcraft.grzegorzekkk.premiumpoints.messages.Messenger;
 import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDao;
-import pl.stillcraft.grzegorzekkk.premiumpoints.payments.PaymentDaoMysql;
-import pl.stillcraft.grzegorzekkk.premiumpoints.utils.HikariPool;
 
 import java.util.Collections;
 import java.util.List;
 
 public class TopCMD implements SubCMD {
+
+    private PaymentDao paymentDao;
+
+    public TopCMD(PaymentDao paymentDaoArg) {
+        paymentDao = paymentDaoArg;
+    }
 
     @Override
     public String getPermission() {
@@ -37,9 +41,8 @@ public class TopCMD implements SubCMD {
             @Override
             public void run() {
                 int index = 0;
-                PaymentDao pDao = new PaymentDaoMysql(HikariPool.getInstance().getDataSource());
                 List<Pair<String, Integer>> topPlayers =
-                        Collections.synchronizedList(pDao.getTopMonthPlayers());
+                        Collections.synchronizedList(paymentDao.getTopMonthPlayers());
                 if (topPlayers.isEmpty()) {
                     Messenger.send(sender, Locale.TOP_EMPTY);
                 }
